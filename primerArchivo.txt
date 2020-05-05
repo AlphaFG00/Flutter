@@ -1,0 +1,30 @@
+Conceptos clave:
+
+Widget: clase que puede tener argumentos posicionales y argumentos con nombre
+Todo en flutter son widgets, como bloques de lego
+
+Tipos:
+
+Stateless Widget:
+
+No importa si una propiedad cambia
+boton, boton con icono
+
+StateFulWidget:
+
+Permite saber el estado, como propiedades que puede cambiar
+Puede redibujarse a si mismo, mostrar cambios
+
+Arbol de Widgets:
+estructura grafica del uso de los mismos widgets y como se ven a grandes rasgos,
+una aplicacion en flutter no es mas que una cantidad de widgets apilados
+
+
+Estructura de un proyecto:
+.idea: configuracion del entorno de trabajo
+buid: codigo que correo en dispositivos
+lib: archivos.dart
+test: pruebas de aplicacion
+metadata: NO TOCAR
+packages: NO TOCAR
+pubspec: package .json en NODE
