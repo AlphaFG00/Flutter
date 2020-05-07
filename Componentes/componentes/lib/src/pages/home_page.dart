@@ -1,4 +1,5 @@
 import 'package:componentes/src/providers/menu_provider.dart';
+import 'package:componentes/src/utils/icono_string_util.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget{
@@ -30,7 +31,7 @@ class HomePage extends StatelessWidget{
 
 
           return ListView(
-            children: _listaItems(snapshot.data),
+            children: _listaItems(snapshot.data,context),
           );
       } ,
     );
@@ -41,7 +42,7 @@ class HomePage extends StatelessWidget{
 
    
       
- List<Widget> _listaItems(List<dynamic> data) {
+ List<Widget> _listaItems(List<dynamic> data, BuildContext context) {
 
    final List<Widget> opciones = [];
    
@@ -50,11 +51,29 @@ class HomePage extends StatelessWidget{
      final widgetTemp = ListTile(
        title: Text(opt['texto']
        ),
-       leading: Icon(Icons.account_circle,color: Colors.red),
+       leading: getIcon(opt['icon']),
        trailing: Icon(Icons.keyboard_arrow_right ,color: Colors.blue,),
        onTap: (){
 
+         Navigator.pushNamed(context, opt['ruta']);
+        
+
+         //navegar a otra pantalla
+
+                //context -> el build context, que pagina sigue o a que pagina regresar
+                //route -> 
+          /*
+          final route = MaterialPageRoute(
+            
+            builder: (context){
+              return AlterPage();
+            } 
+          
+          );    
+            //ir a otra pantalla
+          Navigator.push(context, route); */
        },
+       
        );
       opciones..add(widgetTemp)
             ..add(Divider());
