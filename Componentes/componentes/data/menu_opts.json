@@ -21,6 +21,24 @@
             "icon" : "donut_large",
             "texto": "Animated Container"
 
+        },
+        {
+            "ruta" : "inputs",
+            "icon" : "donut_large",
+            "texto": "inputs"
+
+        },
+        {
+            "ruta" : "slider",
+            "icon" : "list",
+            "texto": "slider"
+
+        },
+        {
+            "ruta" : "list",
+            "icon" : "list",
+            "texto": "list"
+
         }
     ]
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class AnimatedContainerPage extends StatefulWidget {
@@ -7,8 +9,8 @@ class AnimatedContainerPage extends StatefulWidget {
 
 class _AnimatedContainerPageState extends State<AnimatedContainerPage> {
 
-  double _width = 50.0;
-  double _height = 50.0;
+  double _width = 20.0;
+  double _height = 30.0;
   Color _color = Colors.green;
   BorderRadiusGeometry _borderRadius = BorderRadius.circular(8.0);
 
@@ -17,11 +19,14 @@ class _AnimatedContainerPageState extends State<AnimatedContainerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('quepedo'),
+        title: Text('Animacion Mamalona'),
         
       ),
       body: Center(
-        child: Container(
+        child: AnimatedContainer(
+          duration: Duration( seconds: 1),
+          //animaciones sofisticadas:
+          curve: Curves.fastLinearToSlowEaseIn,
           width: _width,
           height:  _height,
           decoration:  BoxDecoration(
@@ -32,17 +37,32 @@ class _AnimatedContainerPageState extends State<AnimatedContainerPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          setState(() {
-            _height = _height+30.0;
-            _width = _width+15.0;
-            _color = Colors.red;
-          });
+         _cambiarForma();
         },
        child: Icon(Icons.change_history)
               ),
     );
   }
 
+  void _cambiarForma(){
 
+    final random = Random();
+
+    setState(() {
+      _width = random.nextInt(255).toDouble();
+    _height += random.nextInt(150).toDouble();
+    _color = Color.fromRGBO(
+      random.nextInt(255),
+      random.nextInt(255),
+     random.nextInt(255),
+      1,
+    );
+
+    _borderRadius= BorderRadius.circular(random.nextInt(100).toDouble());
+
+    });
+
+  }
   
+
 }
