@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:peliculas/src/providers/peliculas_provider.dart';
+import 'package:peliculas/src/search/search_delegate.dart';
 import 'package:peliculas/src/widgets/card_Swiper_widget.dart';
 import 'package:peliculas/src/widgets/movie_horizontal.dart';
 
@@ -7,10 +8,14 @@ class HomePage extends StatelessWidget {
 
   final peliculasProvider = new PeliculasProvider();
 
+  
 
 
   @override
   Widget build(BuildContext context) {
+    peliculasProvider.getPopulares();
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Peliculas Perrras'),
@@ -18,7 +23,14 @@ class HomePage extends StatelessWidget {
         actions: <Widget>[
           IconButton( 
             icon: Icon(Icons.search),
-            onPressed: null,
+            onPressed: (){
+              showSearch(
+                context: context,
+                delegate: DataSearch(),
+                query: 'hola'
+                
+                );
+            },
             )
          
         ],
@@ -63,16 +75,20 @@ class HomePage extends StatelessWidget {
         children: <Widget>[
                 //estilo global de la aplicacion
           Container(
-            padding: EdgeInsets.only(left: 20.0, bottom: 50.0),
-            child: Text('las chidas', style:  Theme.of(context).textTheme.subtitle1,)),
+            padding: EdgeInsets.only(left: 20.0, bottom: 20.0, top:25.0),
+            child: Text('Populares:', style:  Theme.of(context).textTheme.subtitle1,)),
           SizedBox(height: 5.0),
-          FutureBuilder( 
-            future: peliculasProvider.getPopulares(),
+          StreamBuilder( 
+            stream: peliculasProvider.popularesStream,
             builder: (BuildContext context, AsyncSnapshot snapshot){
              
               if(snapshot.hasData) {
                 
-                return MovieHorizontal(peliculas: snapshot.data );
+                return MovieHorizontal(
+                  peliculas: snapshot.data ,
+                  //infinite scroll para cargar cuando llegue al final de la pagina 
+                  siguientePagina: peliculasProvider.getPopulares,
+                  );
 
               }
               else{
