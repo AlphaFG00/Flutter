@@ -1,11 +1,13 @@
 //import 'package:barcode_scan/barcode_scan.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:qrscanner/bloc/scans_bloc.dart';
 import 'package:qrscanner/models/scan_model.dart';
 import 'package:qrscanner/pages/mapas_page.dart';
 import 'package:qrscanner/pages/page_direcciones.dart';
-import 'package:qrscanner/utils/utils.dart';
+import 'package:qrscanner/utils/utils.dart' as utils;
 //import 'package:sqflite/sqflite.dart';
+import 'dart:io';
 
 
 class HomePage extends StatefulWidget {
@@ -93,25 +95,36 @@ class _HomePageState extends State<HomePage> {
 
   }
 
-   _scanQR(BuildContext context) async{
-     
-     //http://google.com
-     //geo:19.414042304313835,-99.12394895991214
+    _scanQR(BuildContext context) async {
 
+    // https://fernando-herrera.com
+    // geo:40.724233047051705,-74.00731459101564
 
-     dynamic futureString;
+    // String futureString = '';
+    String futureString;
 
-      if(futureString != null){
+    try {
+      // futureString = await new QRCodeReader().scan();
+      futureString = await BarcodeScanner.scan();
+    } catch(e) {
+      futureString = e.toString();
+    }
 
-        final scan = ScanModel(valor: futureString);
-        scansBloc.agregarScan(scan);
+    if ( futureString != null ) {
+      
+      final scan = ScanModel( valor: futureString );
+      scansBloc.agregarScan(scan);      
 
-       
-
-        abrirScan(scan,context);
-
-
+      if ( Platform.isIOS ) {
+        Future.delayed( Duration( milliseconds: 750 ), () {
+          utils.abrirScan(scan, context);    
+        });
+      } else {
+        utils.abrirScan(scan, context);
       }
-  }
 
+    }
+     
+
+  }
 }
