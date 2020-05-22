@@ -1,6 +1,7 @@
 import 'package:blocylogin/blocs/provider.dart';
 import 'package:blocylogin/pages/home_page.dart';
 import 'package:blocylogin/pages/login_page.dart';
+import 'package:blocylogin/pages/producto_page.dart';
 import 'package:flutter/material.dart';
  
 void main() => runApp(MyApp());
@@ -17,11 +18,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'Login',
-              initialRoute: 'login',
+              initialRoute: 'home',
               routes: {
                 'login': (BuildContext context) => LoginPage(),
                 'home' : (BuildContext context) => HomePage(),
-
+                'producto' : (BuildContext context) => ProductoPage(),
 
               },
               theme: ThemeData(primaryColor: Colors.deepPurple),
