@@ -4,10 +4,11 @@ import 'package:blocylogin/providers/usuario_provider.dart';
 import 'package:blocylogin/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
-
+class RegistroPage extends StatelessWidget {
 
   final usuarioProvider = new UsuarioProvider();
+
+
 
 
   @override
@@ -142,8 +143,8 @@ class LoginPage extends StatelessWidget {
             ),
             child: Column(
 
-              children: [
-                Text('Iniciar Sesion', style: TextStyle(fontSize:20.0),),
+              children: <Widget>[
+                Text('¿Tienes cuenta?', style: TextStyle(fontSize:20.0),),
                 SizedBox(height: 60.0,),
                 _crearEmail(bloc),
                 SizedBox(height: 32.0,),
@@ -155,13 +156,10 @@ class LoginPage extends StatelessWidget {
           ),
           FlatButton(
             child: Text('Registrarse'),
-            onPressed: () => Navigator.pushReplacementNamed(context, 'registro'),
+            onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
             ),
           SizedBox(height:80.0),
-
-
         ],
-
       ),
 
     );
@@ -261,7 +259,7 @@ class LoginPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot snapshot){
 
         return  RaisedButton(               //navegacion con context
-      onPressed: snapshot.hasData ? () => _login(bloc, context) : null,
+      onPressed: snapshot.hasData ? () => _register(bloc, context) : null,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
         child:Text('Ingresar')
@@ -288,20 +286,20 @@ class LoginPage extends StatelessWidget {
 
   }
   //ultimo valor emitido por un stream
-                                //pintar error de ingreso
-  _login(LoginBloc bloc, BuildContext context)async{
+  _register(LoginBloc bloc, BuildContext context)async{
 
+    final  info = await usuarioProvider.nuevoUsuario(bloc.email, bloc.password);
 
-     Map info = await usuarioProvider.login(bloc.email,bloc.password);
-
+  
     if( info['ok']){
       Navigator.pushReplacementNamed(context, 'home');
     }else{
       mostrarAlerta(context, info['mensaje']);
     }
 
+
    
-    
+   
   }
 
 }

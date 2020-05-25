@@ -1,28 +1,24 @@
 //import 'package:blocylogin/blocs/provider.dart';
+import 'package:blocylogin/blocs/productos_bloc.dart';
+import 'package:blocylogin/blocs/provider.dart';
 import 'package:blocylogin/models/producto_model.dart';
-import 'package:blocylogin/providers/productos_provider.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
 
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-   final productosProvider = new ProductosProvider();
+  
 
   @override
   Widget build(BuildContext context) {
     
-    //final bloc = Provider.of(context);
-   
+    final productosBloc = Provider.productosBloc(context);
+    productosBloc.cargarProductos();
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Bienvenido Prro')
       ),
-      body: _crearListado(),
+      body: _crearListado(productosBloc),
       floatingActionButton: _crearBoton(context),
     );
   }
@@ -31,9 +27,7 @@ class _HomePageState extends State<HomePage> {
 
     return FloatingActionButton(
       onPressed: () => Navigator.pushNamed(context, 'producto').then((value) {
-  setState(() {
-    
-  });
+
 }),
       child: Icon(Icons.add), 
       backgroundColor: Colors.deepPurple,
@@ -42,19 +36,20 @@ class _HomePageState extends State<HomePage> {
 
   }
 
-  Widget _crearListado(){
+  Widget _crearListado(ProductosBloc productosBloc){
 
-    return FutureBuilder(
-      future: productosProvider.cargarProductos(),
+
+    return StreamBuilder(
+      stream: productosBloc.productosStream,
       builder: (BuildContext context, AsyncSnapshot<List<ProductoModel>> snapshot){
-        if(snapshot.hasData){
+         if(snapshot.hasData){
 
             final productos = snapshot.data;
 
             return ListView.builder(
               
               itemCount: productos.length,
-              itemBuilder: (context, i) => _crearItems(productos[i], context)
+              itemBuilder: (context, i) => _crearItems(productos[i], context, productosBloc)
 
             );
         }else{
@@ -62,16 +57,12 @@ class _HomePageState extends State<HomePage> {
             child: CircularProgressIndicator(),
           );
         }
-      },
-      
-      
-      );
-
-    
+      }
+    );
 
   }
 
-  Widget _crearItems(ProductoModel producto, BuildContext context){
+  Widget _crearItems(ProductoModel producto, BuildContext context, ProductosBloc productosBloc){
 
     return Dismissible(
         key: UniqueKey(),
@@ -81,7 +72,7 @@ class _HomePageState extends State<HomePage> {
         onDismissed: (direccion){
           //borrar el producto en firebase
 
-          productosProvider.borrarProducto(producto.id);
+          productosBloc.deleteProducto(producto.id);
 
         },
           child: Card(
@@ -104,9 +95,7 @@ class _HomePageState extends State<HomePage> {
                           onTap: () => Navigator.pushNamed(context, 'producto', 
                               arguments: producto
                               ).then((value) {
-                              setState(() {
-                                
-                              });
+                          
                             }),
                     ),
 

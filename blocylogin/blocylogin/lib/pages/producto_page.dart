@@ -1,6 +1,7 @@
 //import 'dart:html';
+import 'package:blocylogin/blocs/productos_bloc.dart';
+import 'package:blocylogin/blocs/provider.dart';
 import 'package:blocylogin/models/producto_model.dart';
-import 'package:blocylogin/providers/productos_provider.dart';
 import 'package:blocylogin/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,16 +15,18 @@ class ProductoPage extends StatefulWidget {
 
 class _ProductoPageState extends State<ProductoPage> {
 
-  final productoProvider = new ProductosProvider();
+  //final productoProvider = new ProductosProvider();
   final formKey = GlobalKey<FormState>();
   final scaffoldkey = GlobalKey<ScaffoldState>();
   ProductoModel producto = new ProductoModel();
   bool _guardado = false;
   File foto;
+  ProductosBloc productosBloc;
 
   @override
   Widget build(BuildContext context) {
 
+    productosBloc = Provider.productosBloc(context);
 
     //data precargada antes de disparar las acciones
     final ProductoModel prodData = ModalRoute.of(context).settings.arguments;
@@ -157,7 +160,7 @@ class _ProductoPageState extends State<ProductoPage> {
    setState(() {_guardado = true;});
 
    if(foto != null){
-     producto.fotoUrl = await productoProvider.subirImagen(foto);
+     producto.fotoUrl = await productosBloc.addFoto(foto);
    }
       
     print(producto.disponible);
@@ -165,11 +168,11 @@ class _ProductoPageState extends State<ProductoPage> {
     print(producto.titulo);
 
     if(producto.id == null){
-        productoProvider.crearProducto(producto);
+        productosBloc.addProducto(producto);
     }
     else{
 
-      productoProvider.editarProducto(producto);
+      productosBloc.editarProducto(producto);
 
     }
    
