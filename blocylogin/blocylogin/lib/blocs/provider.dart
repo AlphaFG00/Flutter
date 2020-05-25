@@ -1,7 +1,14 @@
 import 'package:blocylogin/blocs/login_bloc.dart';
+import 'package:blocylogin/blocs/productos_bloc.dart';
 import 'package:flutter/material.dart';
 
+
 class Provider extends InheritedWidget{
+
+
+  final  loginbloc =  new LoginBloc();
+  final _productosBloc =  new ProductosBloc();
+
 
   //patron singleton
   static Provider _instancia;
@@ -36,6 +43,15 @@ class Provider extends InheritedWidget{
   static LoginBloc of (BuildContext context){
 
     return context.dependOnInheritedWidgetOfExactType<Provider>().loginBloc;
+
+
+
+  }
+
+
+  static ProductosBloc productosBloc (BuildContext context){
+
+    return context.dependOnInheritedWidgetOfExactType<Provider>()._productosBloc;
 
 
 
